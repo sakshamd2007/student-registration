@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Student Registration System | Enroll Now</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, 'Segoe UI', 'Poppins', 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(145deg, #e0eafc 0%, #cfdef3 100%);
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+        }
+
+        /* main container */
+        .app-container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* header */
+        .hero {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #1f3b5c, #2b5f8a);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.5px;
+        }
+
+        .hero p {
+            color: #2c3e66;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* card grid */
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        /* registration card */
+        .card {
+            background: rgba(255, 255, 255, 0.96);
+            backdrop-filter: blur(0px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
+            padding: 2rem 1.8rem;
+            flex: 1;
+            min-width: 320px;
+            transition: transform 0.2s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            border-left: 5px solid #2b5f8a;
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            color: #1e2f47;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            color: #1f3b4c;
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 1.2rem;
+            font-size: 1rem;
+            background: white;
+            transition: 0.2s;
+            outline: none;
+        }
+
+        input:focus, select:focus {
+            border-color: #2b5f8a;
+            box-shadow: 0 0 0 3px rgba(43, 95, 138, 0.2);
+        }
+
+        .btn {
+            background: #1f5e8e;
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 2rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #0f4468;
+            transform: scale(0.98);
+            box-shadow: 0 5px 12px rgba(0,0,0,0.1);
+        }
+
+        .message-area {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 1.2rem;
+            font-size: 0.85rem;
+            text-align: center;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        .success {
+            background: #dff9e6;
+            color: #0a5c2e;
+            border-left: 4px solid #2ecc71;
+        }
+
+        .error {
+            background: #ffe8e8;
+            color: #b91c1c;
+            border-left: 4px solid #e74c3c;
+        }
+
+        /* student list table */
+        .students-list {
+            background: rgba(255, 255, 255, 0.96);
+            border-radius: 2rem;
+            padding: 1.5rem;
+            box-shadow: 0 20px 35px -12px rgba(0, 0, 0, 0.2);
+            flex: 1.2;
+            min-width: 380px;
+            overflow-x: auto;
+        }
+
+        .students-list h2 {
+            font-size: 1.7rem;
+            font-weight: 600;
+            border-left: 5px solid #2b5f8a;
+            padding-left: 1rem;
+            margin-bottom: 1.2rem;
+            color: #1e2f47;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 0.9rem 0.5rem;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            color: #2c3e66;
+            font-weight: 700;
+            background-color: #f8fafc;
+        }
+
+        td {
+            color: #1f3a4b;
+        }
+
+        .empty-row td {
+            text-align: center;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        .badge {
+            background: #e2f0fa;
+            padding: 0.25rem 0.7rem;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #c0392b;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: 0.1s;
+            font-weight: bold;
+        }
+
+        .delete-btn:hover {
+            color: #e74c3c;
+            transform: scale(1.1);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            color: #2c3e50;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 780px) {
+            body {
+                padding: 1rem;
+            }
+            .card, .students-list {
+                min-width: 280px;
+            }
+            th, td {
+                font-size: 0.8rem;
+                padding: 0.6rem 0.3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="hero">
+        <h1>📚 Student Registration Hub</h1>
+        <p>Enroll new students & manage enrolled list seamlessly</p>
+    </div>
+
+    <div class="dashboard">
+        <!-- Registration Form Card -->
+        <div class="card">
+            <h2>✍️ Register New Student</h2>
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" id="fullname" placeholder="e.g., Priya Sharma" required autocomplete="off">
+                </div>
+                <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" id="email" placeholder="student@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Date of Birth *</label>
+                    <input type="date" id="dob" required>
+                </div>
+                <div class="form-group">
+                    <label>Course *</label>
+                    <select id="course" required>
+                        <option value="" disabled selected>-- Select Course --</option>
+                        <option value="Computer Science">💻 Computer Science</option>
+                        <option value="Business Administration">📊 Business Administration</option>
+                        <option value="Engineering">⚙️ Engineering</option>
+                        <option value="Data Science">📈 Data Science</option>
+                        <option value="Graphic Design">🎨 Graphic Design</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">➕ Register Student</button>
+                <div id="formFeedback" class="message-area"></div>
+            </form>
+        </div>
+
+        <!-- Students List Panel -->
+        <div class="students-list">
+            <h2>📋 Enrolled Students</h2>
+            <div style="overflow-x: auto;">
+                <table id="studentsTable">
+                    <thead>
+                        <tr><th>Name</th><th>Email</th><th>DOB</th><th>Course</th><th style="width: 50px;">Action</th></tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        <tr class="empty-row"><td colspan="5">📭 No students registered yet. Fill the form!</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <footer>✅ Simple backend with Node.js + Express — data stored in memory (real-time)</footer>
+</div>
+
+<script>
+    // ------------------------------------------------------------------
+    // SIMPLE FRONTEND SCRIPT TO COMMUNICATE WITH BACKEND API
+    // Backend runs on port 3000 (or current location). 
+    // For local dev: make sure backend server is running.
+    // We'll dynamically detect API base URL (relative or absolute)
+    // ------------------------------------------------------------------
+    
+    const API_BASE = '/api';   // using relative path, works when frontend served from same origin (backend serves static)
+    
+    // DOM elements
+    const form = document.getElementById('registrationForm');
+    const fullnameInput = document.getElementById('fullname');
+    const emailInput = document.getElementById('email');
+    const dobInput = document.getElementById('dob');
+    const courseSelect = document.getElementById('course');
+    const feedbackDiv = document.getElementById('formFeedback');
+    const tableBody = document.getElementById('studentTableBody');
+    
+    // Helper to show feedback message
+    function showMessage(msg, type = 'error') {
+        feedbackDiv.textContent = msg;
+        feedbackDiv.className = `message-area ${type === 'success' ? 'success' : 'error'}`;
+        setTimeout(() => {
+            if (feedbackDiv) {
+                feedbackDiv.className = 'message-area';
+                feedbackDiv.textContent = '';
+            }
+        }, 4000);
+    }
+    
+    // Render students list from backend data
+    async function fetchAndRenderStudents() {
+        try {
+            const response = await fetch(`${API_BASE}/students`);
+            if (!response.ok) throw new Error('Failed to fetch students');
+            const students = await response.json();
+            renderStudentTable(students);
+        } catch (err) {
+            console.error('Fetch error:', err);
+            tableBody.innerHTML = `<tr class="empty-row"><td colspan="5">⚠️ Cannot connect to server. Make sure backend is running on port 3000.</td></tr>`;
+        }
+    }
+    
+    // Render dynamic rows
+    function renderStudentTable(students) {
+        if (!tableBody) return;
+        if (!students || students.length === 0) {
+            tableBody.innerHTML = `<tr class="empty-row"><td colspan="5">📭 No students registered yet. Fill the form!</td></tr>`;
+            return;
+        }
+        
+        let html = '';
+        students.forEach(student => {
+            // format date nicely
+            let formattedDob = student.dob || '—';
+            if (formattedDob && formattedDob !== '—') {
+                const parts = formattedDob.split('-');
+                if(parts.length === 3) formattedDob = `${parts[2]}/${parts[1]}/${parts[0]}`;
+            }
+            html += `
+                <tr data-id="${student.id}">
+                    <td><strong>${escapeHtml(student.fullname)}</strong></td>
+                    <td>${escapeHtml(student.email)}</td>
+                    <td>${escapeHtml(formattedDob)}</td>
+                    <td><span class="badge">${escapeHtml(student.course)}</span></td>
+                    <td><button class="delete-btn" data-id="${student.id}" title="Remove student">🗑️</button></td>
+                </tr>
+            `;
+        });
+        tableBody.innerHTML = html;
+        
+        // attach delete event listeners to each delete button
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                e.stopPropagation();
+                const studentId = btn.getAttribute('data-id');
+                if (studentId && confirm('Remove this student from registration?')) {
+                    await deleteStudent(studentId);
+                }
+            });
+        });
+    }
+    
+    // escape simple html to prevent XSS
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+    
+    // Delete student by id
+    async function deleteStudent(id) {
+        try {
+            const response = await fetch(`${API_BASE}/students/${id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' }
+            });
+            const data = await response.json();
+            if (response.ok) {
+                showMessage('✅ Student removed successfully', 'success');
+                fetchAndRenderStudents();  // refresh list
+            } else {
+                showMessage(data.message || 'Failed to delete student', 'error');
+            }
+        } catch (err) {
+            console.error('Delete error:', err);
+            showMessage('Server error while deleting', 'error');
+        }
+    }
+    
+    // Submit new student registration
+    form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        // get values
+        const fullname = fullnameInput.value.trim();
+        const email = emailInput.value.trim();
+        const dob = dobInput.value;
+        const course = courseSelect.value;
+        
+        // validations
+        if (!fullname || !email || !dob || !course) {
+            showMessage('❌ All fields are required!', 'error');
+            return;
+        }
+        // simple email format
+        const emailPattern = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+        if (!emailPattern.test(email)) {
+            showMessage('❌ Please enter a valid email address', 'error');
+            return;
+        }
+        // dob cannot be future
+        const today = new Date().toISOString().split('T')[0];
+        if (dob > today) {
+            showMessage('❌ Date of birth cannot be in the future', 'error');
+            return;
+        }
+        
+        // prepare payload
+        const newStudent = {
+            fullname,
+            email,
+            dob,
+            course
+        };
+        
+        try {
+            const response = await fetch(`${API_BASE}/students`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newStudent)
+            });
+            const result = await response.json();
+            if (response.ok) {
+                showMessage(`🎉 ${result.student?.fullname || fullname} registered successfully!`, 'success');
+                // reset form
+                form.reset();
+                // refresh student table
+                fetchAndRenderStudents();
+            } else {
+                showMessage(result.message || 'Registration failed. Email might be duplicate?', 'error');
+            }
+        } catch (err) {
+            console.error('POST error:', err);
+            showMessage('Cannot connect to backend server. Please ensure server is running on port 3000', 'error');
+        }
+    });
+    
+    // initial load
+    fetchAndRenderStudents();
+</script>
+</body>
+</html>
+
+<!-- ========================== BACKEND NODE.JS (EXPRESS) CODE ========================= -->
+<!-- The following code is for the backend server. Save it as 'server.js' and run with 'node server.js' -->
+<!-- Make sure to install express: npm install express -->
+<!-- Run backend: node server.js, then open index.html via same origin (http://localhost:3000) -->
